@@ -14,3 +14,12 @@ GET http://localhost:3000/pizzas
 @baseUrl = http://localhost:3000
 GET {{baseUrl}}/pizzas
 
+### Create a pizza which lacks a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+

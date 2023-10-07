@@ -25,16 +25,15 @@ const films = [
   },
 ];
 
-// Read all the films
+// Read all the films, filtered by minimum-duration if the query param exists
 router.get('/', (req, res) => {
-  const minimumFilmDuration = req?.query?.['minimum-duration']
+  const minimumFilmDuration = req?.query
     ? Number(req.query['minimum-duration'])
     : undefined;
-
-  if (minimumFilmDuration === undefined) return res.json(films);
-
   if (typeof minimumFilmDuration !== 'number' || minimumFilmDuration <= 0)
-    return res.json('Wrong minimum duration'); // bad practise (will be improved in exercise 1.5)
+    return res.sendStatus(400);
+
+  if (!minimumFilmDuration) return res.json(films);
 
   const filmsReachingMinimumDuration = films.filter(
     (film) => film.duration >= minimumFilmDuration
@@ -42,30 +41,35 @@ router.get('/', (req, res) => {
   return res.json(filmsReachingMinimumDuration);
 });
 
-
+// Read a film from its id in the menu
 router.get('/:id', (req, res) => {
-  console.log(`GET /films/${req.params.id}`);
-
   const indexOfFilmFound = films.findIndex((film) => film.id == req.params.id);
 
-  if (indexOfFilmFound < 0) return res.sendStatus(404); 
+  if (indexOfFilmFound < 0) return res.sendStatus(404);
 
-  res.json(films[indexOfFilmFound]);
+  return res.json(films[indexOfFilmFound]);
 });
 
-// Create a pizza to be added to the menu.
+// Create a film
 router.post('/', (req, res) => {
-  const title = req?.body?.title?.trim().length !== 0 ? req.body.title : undefined;
-  const link = req?.body?.link?.trim().length !== 0 ? req.body.link : undefined;
-  const duration = typeof req?.body?.duration!== 'number' || req.body.duration < 0 ? undefined : req.body.duration;
-  const budget = typeof req?.body?.budget !== 'number' || req.body.budget <0 ? undefined : req.body.budget;
-
-  console.log('POST /films');
+  const title =
+    req?.body?.title?.trim()?.length !== 0 ? req.body.title : undefined;
+  const link =
+    req?.body?.content?.trim().length !== 0 ? req.body.link : undefined;
+  const duration =
+    typeof req?.body?.duration !== 'number' || req.body.duration < 0
+      ? undefined
+      : req.body.duration;
+  const budget =
+    typeof req?.body?.budget !== 'number' || req.body.budget < 0
+      ? undefined
+      : req.body.budget;
 
   if (!title || !link || !duration || !budget) return res.sendStatus(400);
 
   const existingFilm = films.find(
-    (film) => film.title.toLowerCase() === title.toLowerCase());
+    (film) => film.title.toLowerCase() === title.toLowerCase()
+  );
   if (existingFilm) return res.sendStatus(409);
 
   const lastItemIndex = films?.length !== 0 ? films.length - 1 : undefined;

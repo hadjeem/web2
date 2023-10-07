@@ -139,16 +139,10 @@ router.put('/:id', function (req, res) {
 
   if (
     !req.body ||
-    !title ||
-    !title.trim() ||
-    !link ||
-    !link.trim() ||
-    duration === undefined ||
-    typeof req?.body?.duration !== 'number' ||
-    duration < 0 ||
-    budget === undefined ||
-    typeof req?.body?.budget !== 'number' ||
-    budget < 0
+    !title ||!title.trim() ||
+    !link || !link.trim() ||
+    duration === undefined || typeof req?.body?.duration !== 'number' ||duration < 0 ||
+    budget === undefined ||typeof req?.body?.budget !== 'number' ||budget < 0
   )
     return res.sendStatus(400);
 

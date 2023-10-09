@@ -9,7 +9,13 @@ GET {{baseUrl}}/films/?minimum-duration=140
 ### Try to read films with wrong minimum-duration
 GET {{baseUrl}}/films/?minimum-duration=0
 
-### Create a film
+### Read film with ID == 1
+GET {{baseUrl}}/films/1
+
+### Read film which does not exist
+GET {{baseUrl}}/films/500
+
+### Try to create an existing film
 POST {{baseUrl}}/films/
 Content-Type: application/json
 
@@ -42,7 +48,7 @@ Content-Type: application/json
     "link":"https://en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace"
 }
 
-### Create another film
+### Create a film
 POST {{baseUrl}}/films/
 Content-Type: application/json
 
@@ -53,14 +59,9 @@ Content-Type: application/json
     "link":"findIt.com"
 }
 
-### Read film with ID == 1
-GET {{baseUrl}}/films/1
+### Delete the film with ID == 2
+DELETE {{baseUrl}}/films/2
 
-### Read film which does not exist
-GET {{baseUrl}}/films/500
-
-### delete a film
-DELETE {{baseUrl}}/films/3
 
 ### Update film with ID == 2
 PATCH {{baseUrl}}/films/2
@@ -70,7 +71,6 @@ Content-Type: application/json
     "title":"Star Wars: Episode II – Attack of the Clones",
     "budget": 115
 }
-
 
 ### Try to update film with ID == 2 with empty param
 PATCH {{baseUrl}}/films/2
